@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "John Smith",
+    "expertise": "Engine Specialist",
+    "img": "https://i.ibb.co/3B57djh/person1.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Emily Johnson",
+    "expertise": "Transmission Expert",
+    "img": "https://i.ibb.co/vZJStb7/person2.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Michael Lee",
+    "expertise": "Brake Technician",
+    "img": "https://i.ibb.co/2nqw9c8/person3.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Jessica Brown",
+    "expertise": "Suspension Specialist",
+    "img": "https://i.ibb.co/mhK3Md0/person4.jpg"
+  },
+  {
+    "id": 5,
+    "name": "David Garcia",
+    "expertise": "Electrical Systems Technician",
+    "img": "https://i.ibb.co/ZWScwQG/person5.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Sarah Martinez",
+    "expertise": "AC and Heating Specialist",
+    "img": "https://i.ibb.co/pjsHgv0/pserson6.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Chris Wilson",
+    "expertise": "Diagnostician",
+    "img": "https://i.ibb.co/rF67wKZ/person7.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Amanda Taylor",
+    "expertise": "General Mechanic",
+    "img": "https://i.ibb.co/5Rmj8g3/person8.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Kevin Rodriguez",
+    "expertise": "Tire Technician",
+    "img": "https://i.ibb.co/HrM07fW/person9.jpg"
+  }
+]
