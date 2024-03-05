@@ -1,10 +1,37 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../Provider/AuthProvider";
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  const [item, setItem] = useState(0);
+  const [subtotal, setSubtotal] = useState(0);
+  const navigate = useNavigate();
+  const url = `http://localhost:2500/bookings?email=${user?.email}`;
+  useEffect(() => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data.length);
+
+        const total = data.reduce((acc, current) => {
+          return acc + current.service_due;
+        }, 0);
+        setSubtotal(total);
+      });
+  }, [url, user]);
+
+  const handleLogOut = () => {
+    console.log("ok");
+    logOut().then(() => {
+      navigate("/");
+      window.location.reload();
+    });
+  };
   const navItems = (
     <>
       <li>
-        <a>Home</a>
+        <Link to="/">Home</Link>
       </li>
       <li>
         <a>About</a>
@@ -77,7 +104,7 @@ const Navbar = () => {
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                   />
                 </svg>
-                <span className="badge badge-sm indicator-item">8</span>
+                <span className="badge badge-sm indicator-item">{item}</span>
               </div>
             </div>
             <div
@@ -85,13 +112,21 @@ const Navbar = () => {
               className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
             >
               <div className="card-body">
-                <span className="font-bold text-lg">8 Items</span>
-                <span className="text-info">Subtotal: $999</span>
-                <Link className="card-actions">
-                  <button className="btn btn-primary btn-block">
-                    View cart
-                  </button>
-                </Link>
+                <span className="font-bold text-lg">{item} Items</span>
+                <span className="text-info">Subtotal: {subtotal}$</span>
+                {user ? (
+                  <Link to="/myCart" className="card-actions">
+                    <button className="btn  bg-[#ff3811] hover:bg-[#ff3811]  text-white btn-block">
+                      View cart
+                    </button>
+                  </Link>
+                ) : (
+                  <Link to="/login" className="card-actions">
+                    <button className="btn bg-[#ff3811] hover:bg-[#ff3811] text-white btn-block">
+                      Login
+                    </button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -102,10 +137,17 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
+                {user?.photoURL ? (
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src={user.photoURL}
+                  />
+                ) : (
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  />
+                )}
               </div>
             </div>
             <ul
@@ -122,15 +164,19 @@ const Navbar = () => {
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                {user ? (
+                  <button onClick={handleLogOut}>Logout</button>
+                ) : (
+                  <Link to="/login">Login</Link>
+                )}
               </li>
             </ul>
           </div>
-          <Link>
+          <div className="hidden md:flex">
             <button className="btn btn-outline px-8  hover:bg-[#ff3811] hover:border-[#ff3811] border-[#ff3811]">
               Appointment
             </button>
-          </Link>
+          </div>
         </div>
       </div>
     </div>

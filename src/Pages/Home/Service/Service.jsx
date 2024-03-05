@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import "../../../../public/services.json";
 import ServiceCard from "./ServiceCard";
 const Service = () => {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    fetch("services.json")
+    fetch("http://localhost:2500/services")
       .then((res) => res.json())
       .then((data) => setServices(data));
   }, []);
-  console.log(services);
   return (
     <div className="my-12">
       <div className=" text-center my-8">
