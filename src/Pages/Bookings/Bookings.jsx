@@ -6,6 +6,7 @@ import { MdCancel } from "react-icons/md";
 import { PiArrowBendUpLeftBold } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Bookings = () => {
   const routeName = "Cart Details";
@@ -14,9 +15,10 @@ const Bookings = () => {
   const url = `http://localhost:2500/bookings?email=${user?.email}`;
   console.log(bookings);
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => setBookings(data));
+    axios.get(url, { withCredentials: true }).then((res) => {
+      setBookings(res.data);
+    });
+   
   }, [url]);
 
   const handleRemove = (id) => {

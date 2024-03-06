@@ -5,6 +5,7 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
+import axios from "axios";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { manageUser } = useContext(AuthContext);
@@ -18,9 +19,17 @@ const Login = () => {
     const password = e.target.password.value;
     manageUser(email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        navigate(location?.state ? location.state : "/");
-        console.log(user);
+        const loadedUser = userCredential.user;
+        const user = { email };
+        console.log(loadedUser);
+        axios
+          .post("http://localhost:2500/jwt", user, { withCredentials: true })
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.success) {
+              navigate(location?.state ? location.state : "/");
+            }
+          });
       })
       .catch((error) => {
         const errorMessage = error.message;

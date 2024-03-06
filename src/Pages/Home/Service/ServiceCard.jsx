@@ -1,5 +1,4 @@
 import { FaArrowRightLong } from "react-icons/fa6";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 const ServiceCard = ({ service }) => {
   const { img, title, price, _id } = service;
@@ -25,7 +24,5 @@ const ServiceCard = ({ service }) => {
   );
 };
 
-ServiceCard.propTypes = {
-  service: PropTypes.obj,
-};
+
 export default ServiceCard;
