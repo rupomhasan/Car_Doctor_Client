@@ -12,13 +12,12 @@ const Bookings = () => {
   const routeName = "Cart Details";
   const { user, admin } = useContext(AuthContext);
   const [bookings, setBookings] = useState();
-  const url = `http://localhost:2500/bookings?email=${user?.email}`;
+  const url = `https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/bookings?email=${user?.email}`;
   console.log(bookings);
   useEffect(() => {
-    axios.get(url, { withCredentials: true }).then((res) => {
+    axios.get(url).then((res) => {
       setBookings(res.data);
     });
-   
   }, [url]);
 
   const handleRemove = (id) => {
@@ -32,7 +31,7 @@ const Bookings = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:2500/bookings/${id}`, {
+        fetch(`https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/bookings/${id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
@@ -62,7 +61,7 @@ const Bookings = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:2500/bookings`, {
+        fetch(`https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/bookings`, {
           method: "DELETE",
         })
           .then((res) => res.json())
@@ -81,7 +80,7 @@ const Bookings = () => {
   };
   const handleStatus = (id) => {
     console.log("ok");
-    fetch(`http://localhost:2500/bookings/${id}`, {
+    fetch(`https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/bookings/${id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
@@ -138,7 +137,7 @@ const Bookings = () => {
                       </div>
                       <div>
                         <div className="font-bold">{data.serviceName}</div>
-                        <div className="text-sm opacity-50">United States</div>
+                        <div className="text-sm opacity-50">{data.type}</div>
                       </div>
                     </div>
                   </td>

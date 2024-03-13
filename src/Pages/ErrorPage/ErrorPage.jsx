@@ -1,5 +1,6 @@
 import Navbar from "../Shared/Navbar/Navbar";
-import img from "../../assets/404.jpg";
+import error from "../../assets/images/Error/404.json";
+import Lottie from "lottie-react";
 
 const ErrorPage = () => {
   return (
@@ -7,8 +8,8 @@ const ErrorPage = () => {
       <div>
         <Navbar />
       </div>
-      <div>
-        <img src={img} alt="404" />
+      <div className="max-w-screen-sm mx-auto ">
+        <Lottie animationData={error}></Lottie>
       </div>
     </div>
   );

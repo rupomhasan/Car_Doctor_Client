@@ -11,9 +11,8 @@ const Details = () => {
 
   const service = useLoaderData();
   const { facility, title, img, price, description, _id } = service;
-
   useEffect(() => {
-    fetch("http://localhost:2500/services")
+    fetch("https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/services")
       .then((res) => res.json())
       .then((data) => setServiceList(data));
   }, []);
@@ -32,7 +31,7 @@ const Details = () => {
             <p className="text-gray-500 font-semibold">{description}</p>
           </div>
           <div className="grid md:grid-cols-2 gap-5 my-10">
-            {facility.map((data, idx) => (
+            {facility?.map((data, idx) => (
               <div key={idx}>
                 <div className="card  bg-base-200 shadow-xl border-t-[#ff7357] border-t-[7px]">
                   <div className="card-body">
@@ -60,7 +59,6 @@ const Details = () => {
               </div>
             ))}
           </div>
-
           {/* Download */}
           <div className="bg-black py-10 px-8 rounded-xl text-white space-y-5">
             <p className="text-2xl font-bold mb-2">Download</p>

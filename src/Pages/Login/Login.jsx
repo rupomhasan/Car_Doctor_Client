@@ -6,35 +6,35 @@ import { FaEyeSlash } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 import axios from "axios";
+import "react-loading-skeleton/dist/skeleton.css";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { manageUser } = useContext(AuthContext);
   const location = useLocation();
-  console.log(location);
   const navigate = useNavigate();
   const handleUser = (e) => {
     e.preventDefault();
 
     const email = e.target.email.value;
     const password = e.target.password.value;
-    manageUser(email, password)
-      .then((userCredential) => {
-        const loadedUser = userCredential.user;
-        const user = { email };
-        console.log(loadedUser);
-        axios
-          .post("http://localhost:2500/jwt", user, { withCredentials: true })
-          .then((res) => {
-            console.log(res.data);
-            if (res.data.success) {
+    axios
+      .post("https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/jwt", { email }, { withCredentials: true })
+      .then((res) => {
+        console.log(res.data);
+        manageUser(email, password)
+          .then((userCredential) => {
+            const loadedUser = userCredential.user;
+            console.log(loadedUser);
+            if (loadedUser) {
+              alert("loggedIn");
+
+              console.log(loadedUser);
               navigate(location?.state ? location.state : "/");
             }
-          });
+          })
+          .catch((error) => console.log(error));
       })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log(errorMessage);
-      });
+      .catch((error) => console.log(error));
   };
 
   return (

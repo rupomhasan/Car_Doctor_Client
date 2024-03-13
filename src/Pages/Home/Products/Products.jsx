@@ -1,16 +1,49 @@
 import Rating from "react-rating";
-import img1 from "../../../assets/images/products/1.png";
-import img2 from "../../../assets/images/products/2.png";
-import img3 from "../../../assets/images/products/3.png";
-import img4 from "../../../assets/images/products/4.png";
-import img5 from "../../../assets/images/products/5.png";
-import img6 from "../../../assets/images/products/6.png";
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { AuthContext } from "../../../Provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Products = () => {
+  const [products, setProducts] = useState([]);
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get("https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/products").then((res) => {
+      setProducts(res.data);
+    });
+  }, []);
+
+  const handleAddToCart = (price, title, img) => {
+    if (!user) {
+      navigate("/login");
+    }
+
+    const bookings = {
+      phone: "",
+      type: "products",
+      customerName: user?.displayName || "",
+      date: "",
+      email: user?.email,
+      message: "",
+      serviceImg: img || "",
+      serviceName: title || "",
+      service_due: price || "",
+    };
+    axios.post("https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/bookings", bookings).then((res) => {
+      console.log(res.data);
+      if (res.data.acknowledged === true) {
+        toast("Product added to cart");
+      }
+    });
+  };
   return (
-    <div className="my-32">
+    <div id="product" className="my-32">
       <div className=" text-center my-8">
         <p className="text-[#ff3811] text-2xl font-bold">Popular Products</p>
         <h3 className="font-bold text-5xl">Browse Our Products</h3>
@@ -23,96 +56,37 @@ const Products = () => {
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mx-3">
         {/* Products 1 */}
-        <div className="card p-5  bg-base-100 shadow-md">
-          <figure className="bg-base-200 rounded-2xl ">
-            <img src={img1} alt="Shoes" className="" />
-          </figure>
-          <div className="card-body items-center text-center">
-            <Rating
-              initialRating={4.5}
-              emptySymbol={<FaRegStar className="text-2xl" />}
-              fullSymbol={<FaStar className="text-2xl text-[#FF9529]" />}
-            />
-            <h2 className="card-title">Electric Vehicle Brake Pads</h2>
-            <p className="text-xl font-extrabold text-red-500">Price : $299</p>
+
+        {products.map((product, idx) => (
+          <div key={idx}>
+            <div className="card p-5  bg-base-100 shadow-md">
+              <figure className="bg-base-200 rounded-2xl ">
+                <img src={product.img} alt="" className="" />
+              </figure>
+              <div className="card-body items-center text-center">
+                <Rating
+                  initialRating={product.rating}
+                  emptySymbol={<FaRegStar className="text-2xl" />}
+                  fullSymbol={<FaStar className="text-2xl text-[#FF9529]" />}
+                />
+                <h2 className="card-title">{product.title}</h2>
+                <p className="text-xl font-extrabold text-red-500">
+                  Price : ${product.price}
+                </p>
+                <button
+                  onClick={() =>
+                    handleAddToCart(product.price, product.title, product.img)
+                  }
+                  className="btn btn-sm mt-2 hover:bg-[#ff3811] hover:text-white"
+                >
+                  Add To Cart
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-        {/* products 2 */}
-        <div className="card p-5  bg-base-100 shadow-md">
-          <figure className="bg-base-200 rounded-2xl ">
-            <img src={img2} alt="Shoes" className="" />
-          </figure>
-          <div className="card-body items-center text-center">
-            <Rating
-              initialRating={3.3}
-              emptySymbol={<FaRegStar className="text-2xl" />}
-              fullSymbol={<FaStar className="text-2xl text-[#FF9529]" />}
-            />
-            <h2 className="card-title">Car Suspension</h2>
-            <p className="text-xl font-extrabold text-red-500">Price : $500</p>
-          </div>
-        </div>
-        {/* products 3 */}
-        <div className="card p-5  bg-base-100 shadow-md">
-          <figure className="bg-base-200 rounded-2xl ">
-            <img src={img3} alt="Shoes" className="" />
-          </figure>
-          <div className="card-body items-center text-center">
-            <Rating
-              initialRating={3.9}
-              emptySymbol={<FaRegStar className="text-2xl" />}
-              fullSymbol={<FaStar className="text-2xl text-[#FF9529]" />}
-            />
-            <h2 className="card-title">Car Air Filter</h2>
-            <p className="text-xl font-extrabold text-red-500">Price : $390</p>
-          </div>
-        </div>
-        {/* Products 4 */}
-        <div className="card p-5  bg-base-100 shadow-md">
-          <figure className="bg-base-200 rounded-2xl ">
-            <img src={img4} alt="Shoes" className="" />
-          </figure>
-          <div className="card-body items-center text-center">
-            <Rating
-              initialRating={4}
-              emptySymbol={<FaRegStar className="text-2xl" />}
-              fullSymbol={<FaStar className="text-2xl text-[#FF9529]" />}
-            />
-            <h2 className="card-title">Car Battery</h2>
-            <p className="text-xl font-extrabold text-red-500">Price : $290</p>
-          </div>
-        </div>
-        {/* products 5 */}
-        <div className="card p-5  bg-base-100 shadow-md">
-          <figure className="bg-base-200 rounded-2xl ">
-            <img src={img5} alt="Shoes" className="" />
-          </figure>
-          <div className="card-body items-center text-center">
-            <Rating
-              initialRating={4.6}
-              emptySymbol={<FaRegStar className="text-2xl" />}
-              fullSymbol={<FaStar className="text-2xl text-[#FF9529]" />}
-            />
-            <h2 className="card-title">Car tyres</h2>
-            <p className="text-xl font-extrabold text-red-500">Price : $165</p>
-          </div>
-        </div>
-        {/* products 6 */}
-        <div className="card p-5  bg-base-100 shadow-md">
-          <figure className="bg-base-200 rounded-2xl ">
-            <img src={img6} alt="Shoes" className="" />
-          </figure>
-          <div className="card-body items-center text-center">
-            <Rating
-              initialRating={4.5}
-              emptySymbol={<FaRegStar className="text-2xl" />}
-              fullSymbol={<FaStar className="text-2xl text-[#FF9529]" />}
-            />
-            <h2 className="card-title">Car Engine Plug</h2>
-            <p className="text-xl font-extrabold text-red-500">Price : $240</p>
-          </div>
-        </div>
+        ))}
       </div>
+      <ToastContainer />
     </div>
   );
 };

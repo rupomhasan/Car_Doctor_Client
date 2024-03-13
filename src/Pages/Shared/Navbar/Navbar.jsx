@@ -3,11 +3,11 @@ import logo from "../../../assets/logo.svg";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../Provider/AuthProvider";
 const Navbar = () => {
-  const { user, logOut } = useContext(AuthContext);
+  const { user, logOut , admin } = useContext(AuthContext);
   const [item, setItem] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
   const navigate = useNavigate();
-  const url = `http://localhost:2500/bookings?email=${user?.email}`;
+  const url = `https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/bookings?email=${user?.email}`;
   useEffect(() => {
     fetch(url)
       .then((res) => res.json())
@@ -28,6 +28,11 @@ const Navbar = () => {
       window.location.reload();
     });
   };
+
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    section.scrollIntoView({ behavior: "smooth" });
+  };
   const navItems = (
     <>
       <li>
@@ -37,10 +42,10 @@ const Navbar = () => {
         <a>About</a>
       </li>
       <li>
-        <a>Services</a>
+        <a onClick={() => scrollToSection("service")}>Services</a>
       </li>
       <li>
-        <a>Blog</a>
+        <a onClick={() => scrollToSection("product")}>Products</a>
       </li>
       <li>
         <Link>Contact</Link>
@@ -155,10 +160,13 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a className="justify-between">
+                {admin ? <Link to="/admin" className="justify-between">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </Link> : <Link to="/userProfile" className="justify-between">
+                  Profile
+                  <span className="badge">New</span>
+                </Link> }
               </li>
               <li>
                 <a>Settings</a>

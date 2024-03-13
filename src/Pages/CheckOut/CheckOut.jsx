@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import DetailsBanner from "../Shared/DetailsBanner/DetailsBanner";
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
@@ -8,7 +8,7 @@ const CheckOut = () => {
   const service = useLoaderData();
   const { user } = useContext(AuthContext);
   const { title, price, _id, img } = service;
-
+  const navigate = useNavigate();
   const handleBookingService = (e) => {
     e.preventDefault();
     const from = e.target;
@@ -22,6 +22,7 @@ const CheckOut = () => {
     const message = from.message.value || "No message";
     const service_id = _id;
     const bookings = {
+      type: "service",
       phone,
       customerName: name,
       date,
@@ -33,7 +34,7 @@ const CheckOut = () => {
       service_due: newPrice,
     };
 
-    fetch("http://localhost:2500/bookings", {
+    fetch("https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/bookings", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -50,6 +51,7 @@ const CheckOut = () => {
             showConfirmButton: false,
             timer: 1500,
           });
+          navigate("/");
         }
       });
   };

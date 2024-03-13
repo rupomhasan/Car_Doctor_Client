@@ -5,6 +5,7 @@ import { FaLinkedinIn } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SocialLogin = () => {
   const location = useLocation();
@@ -16,8 +17,16 @@ const SocialLogin = () => {
     console.log("ok");
     socialUser(provider)
       .then((result) => {
-        const user = result.user;
+        const loadedUser = result.user;
+        const user = {
+          name: loadedUser.displayName,
+          email: loadedUser.email,
+        };
+        axios.post("https://recap-car-doctor-server-kq91fhz4b-rupomhasans-projects.vercel.app/users", user).then((res) => {
+          console.log(res.data);
+        });
         console.log(user);
+
         navigate(location.state ? location.state : "/");
       })
       .catch((error) => {
